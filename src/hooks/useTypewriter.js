@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
-const TYPE_SPEED = 75;   // ms per character typed
-const DELETE_SPEED = 40; // ms per character deleted
-const PAUSE_AFTER = 1800; // ms pause after fully typed
-const PAUSE_BEFORE = 280; // ms pause before typing next word
+const TYPE_SPEED = 75;
+const DELETE_SPEED = 40;
+const PAUSE_AFTER = 1800;
+const PAUSE_BEFORE = 280;
 
 export function useTypewriter(phrases) {
   const [displayed, setDisplayed] = useState('');
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const timeoutRef = useRef(null);
+  const stateRef = useRef({ phraseIndex: 0, isDeleting: false, text: '' });
+  const timerRef = useRef(null);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia(
@@ -21,40 +20,41 @@ export function useTypewriter(phrases) {
       return;
     }
 
-    const current = phrases[phraseIndex];
+    function tick() {
+      const s = stateRef.current;
+      const current = phrases[s.phraseIndex];
 
-    const tick = () => {
-      setDisplayed((prev) => {
-        if (!isDeleting) {
-          const next = current.slice(0, prev.length + 1);
-          if (next === current) {
-            timeoutRef.current = setTimeout(
-              () => setIsDeleting(true),
-              PAUSE_AFTER
-            );
-          } else {
-            timeoutRef.current = setTimeout(tick, TYPE_SPEED);
-          }
-          return next;
+      if (!s.isDeleting) {
+        s.text = current.slice(0, s.text.length + 1);
+        setDisplayed(s.text);
+
+        if (s.text === current) {
+          timerRef.current = setTimeout(() => {
+            s.isDeleting = true;
+            tick();
+          }, PAUSE_AFTER);
         } else {
-          const next = current.slice(0, prev.length - 1);
-          if (next === '') {
-            timeoutRef.current = setTimeout(() => {
-              setIsDeleting(false);
-              setPhraseIndex((i) => (i + 1) % phrases.length);
-            }, PAUSE_BEFORE);
-          } else {
-            timeoutRef.current = setTimeout(tick, DELETE_SPEED);
-          }
-          return next;
+          timerRef.current = setTimeout(tick, TYPE_SPEED);
         }
-      });
-    };
+      } else {
+        s.text = current.slice(0, s.text.length - 1);
+        setDisplayed(s.text);
 
-    timeoutRef.current = setTimeout(tick, isDeleting ? DELETE_SPEED : TYPE_SPEED);
+        if (s.text === '') {
+          s.isDeleting = false;
+          s.phraseIndex = (s.phraseIndex + 1) % phrases.length;
+          timerRef.current = setTimeout(tick, PAUSE_BEFORE);
+        } else {
+          timerRef.current = setTimeout(tick, DELETE_SPEED);
+        }
+      }
+    }
 
-    return () => clearTimeout(timeoutRef.current);
-  }, [phraseIndex, isDeleting, phrases]);
+    timerRef.current = setTimeout(tick, TYPE_SPEED);
+
+    return () => clearTimeout(timerRef.current);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return displayed;
 }

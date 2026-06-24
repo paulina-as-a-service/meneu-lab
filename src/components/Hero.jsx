@@ -48,26 +48,28 @@ export default function Hero() {
         <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.05] text-plum dark:text-plum-200 sm:text-5xl md:text-6xl">
           {hero.headlineTop}{' '}
           {/*
-            Outer span: inline-block so the yellow highlight and invisible
-            ghost text can establish a stable width. The visible typed text
-            and cursor sit on top via absolute positioning.
+            Outer span: inline so it stays in the text flow and wraps
+            naturally at small viewports — no whitespace-nowrap, no overflow.
+            The invisible ghost text reserves enough width for the longest
+            phrase without forcing layout outside the heading's bounds.
           */}
-          <span className="relative inline-block whitespace-nowrap">
-            {/* Ghost text — invisible, holds width of the longest phrase */}
-            <span aria-hidden="true" className="invisible">{longestPhrase}</span>
+          <span className="relative inline-block">
+            {/* Ghost text reserves width of the longest phrase */}
+            <span aria-hidden="true" className="invisible select-none">{longestPhrase}</span>
 
-            {/* Yellow highlight — full width of ghost */}
+            {/* Yellow highlight spans the full ghost width */}
             <span
               aria-hidden="true"
               className="absolute inset-x-0 bottom-1 z-0 h-3 bg-yellow/70"
             />
 
-            {/* Typed text + blinking cursor */}
-            <span className="absolute inset-0 z-10 flex items-baseline gap-0">
-              <span>{typed}</span>
+            {/* Typed text + cursor sit on top, left-aligned */}
+            <span className="absolute inset-0 z-10 flex items-end pb-1">
+              <span className="leading-none">{typed}</span>
               <span
                 aria-hidden="true"
-                className="typed-cursor ml-[2px] inline-block select-none self-stretch w-[3px] rounded-sm bg-plum dark:bg-plum-200"
+                className="typed-cursor mb-[0.05em] ml-[2px] inline-block w-[0.12em] rounded-sm bg-plum dark:bg-plum-200"
+                style={{ height: '0.85em' }}
               />
             </span>
           </span>

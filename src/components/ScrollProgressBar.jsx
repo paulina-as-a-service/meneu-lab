@@ -5,9 +5,9 @@ export default function ScrollProgressBar() {
 
   useEffect(() => {
     const update = () => {
-      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-      const total = scrollHeight - clientHeight;
-      setProgress(total > 0 ? scrollTop / total : 0);
+      const scrollY = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(total > 0 ? scrollY / total : 0);
     };
     window.addEventListener('scroll', update, { passive: true });
     return () => window.removeEventListener('scroll', update);

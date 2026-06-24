@@ -16,6 +16,9 @@ export default function App() {
 
   useEffect(() => {
     const DURATION = 200;
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
 
     const handler = (e) => {
       const link = e.target.closest('a[href^="#"]');
@@ -26,16 +29,30 @@ export default function App() {
       e.preventDefault();
       clearTimeout(timerRef.current);
 
-      setFading(true);
-      timerRef.current = setTimeout(() => {
+      const scrollToTarget = () => {
         const target = document.querySelector(href);
         if (target) {
           target.scrollIntoView({ behavior: 'instant' });
         } else {
           window.scrollTo({ top: 0, behavior: 'instant' });
         }
-        setFading(false);
-      }, DURATION);
+      };
+
+      if (reducedMotion) {
+        scrollToTarget();
+        return;
+      }
+
+      // Reset opacity immediately if already mid-transition, then re-fade.
+      setFading(false);
+      // rAF ensures the opacity:1 paint happens before we flip to 0.
+      requestAnimationFrame(() => {
+        setFading(true);
+        timerRef.current = setTimeout(() => {
+          scrollToTarget();
+          setFading(false);
+        }, DURATION);
+      });
     };
 
     document.addEventListener('click', handler);
