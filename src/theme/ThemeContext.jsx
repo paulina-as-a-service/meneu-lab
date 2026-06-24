@@ -9,8 +9,7 @@ import {
 
 const ThemeContext = createContext(null);
 
-// Duration of each phase of the wipe, in ms. Total sweep = DURATION * 2.
-const DURATION = 400;
+const DURATION = 350;
 
 function getInitialTheme() {
   if (typeof window === 'undefined') return 'light';
@@ -40,8 +39,6 @@ export function ThemeProvider({ children }) {
     setTheme(next);
   }, []);
 
-  // Keep the html class in sync on first mount (the inline script in
-  // index.html sets it pre-paint; this guards against hydration drift).
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,7 +51,6 @@ export function ThemeProvider({ children }) {
       '(prefers-reduced-motion: reduce)'
     ).matches;
 
-    // No animation: just flip.
     if (!overlay || prefersReduced || animating.current) {
       applyTheme(next);
       return;
@@ -62,27 +58,22 @@ export function ThemeProvider({ children }) {
 
     animating.current = true;
 
-    // Both directions sweep left -> right.
-    const enterFrom = '-100%';
-    const exitTo = '100%';
-
-    // Phase 0: park the overlay off-screen with no transition.
-    overlay.style.transition = 'none';
-    overlay.style.transform = `translateX(${enterFrom})`;
-    // Force reflow so the next transform animates.
+    // Phase 1: sweep overlay in from the left.
+    overlay.classList.remove('theme-sweep-in', 'theme-sweep-out');
+    // Force reflow so removing classes takes effect before re-adding.
     void overlay.offsetWidth;
-
-    // Phase 1: sweep in to cover the screen.
-    overlay.style.transition = `transform ${DURATION}ms cubic-bezier(0.65, 0, 0.35, 1)`;
-    overlay.style.transform = 'translateX(0)';
+    overlay.classList.add('theme-sweep-in');
 
     window.setTimeout(() => {
-      // Flip the theme while the screen is covered.
+      // Flip theme while screen is covered.
       applyTheme(next);
-      // Phase 2: continue the sweep off-screen in the same direction.
-      overlay.style.transform = `translateX(${exitTo})`;
+      // Phase 2: continue sweeping the overlay out to the right.
+      overlay.classList.remove('theme-sweep-in');
+      void overlay.offsetWidth;
+      overlay.classList.add('theme-sweep-out');
+
       window.setTimeout(() => {
-        overlay.style.transition = 'none';
+        overlay.classList.remove('theme-sweep-out');
         animating.current = false;
       }, DURATION);
     }, DURATION);
@@ -91,12 +82,17 @@ export function ThemeProvider({ children }) {
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
-      {/* Branded sweep overlay. Sits above everything, ignores clicks. */}
       <div
         ref={overlayRef}
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-[100] bg-plum"
-        style={{ transform: 'translateX(-100%)' }}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          pointerEvents: 'none',
+          backgroundColor: '#633058',
+          transform: 'translateX(-100%)',
+        }}
       />
     </ThemeContext.Provider>
   );
