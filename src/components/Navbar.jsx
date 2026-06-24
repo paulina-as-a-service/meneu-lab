@@ -38,7 +38,7 @@ export default function Navbar() {
           <ThemeToggle />
           <button
             type="button"
-            aria-label={open ? 'Cerrar menu' : 'Abrir menu'}
+            aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border-[1.5px] border-border1 text-plum dark:border-night-border dark:text-night-ink"

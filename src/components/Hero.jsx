@@ -50,10 +50,10 @@ export default function Hero() {
 
         <div className="mt-10 inline-flex items-center gap-2 rounded-pill bg-card-green px-4 py-2 dark:bg-night-card2">
           <span className="font-display text-lg font-semibold text-olive dark:text-green">
-            {brand.yearsExperience} anos
+            {brand.yearsExperience} años
           </span>
           <span className="font-body text-sm font-semibold text-olive/80 dark:text-green/80">
-            metiendonos hasta la cocina de cada negocio
+            metiéndonos hasta la cocina de cada negocio
           </span>
         </div>
       </div>

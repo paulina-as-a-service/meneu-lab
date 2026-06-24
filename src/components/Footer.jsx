@@ -15,7 +15,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <nav className="flex flex-col gap-2" aria-label="Pie de pagina">
+          <nav className="flex flex-col gap-2" aria-label="Pie de página">
             {nav.map((item) => (
               <a
                 key={item.href}
