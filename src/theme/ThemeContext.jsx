@@ -62,9 +62,9 @@ export function ThemeProvider({ children }) {
 
     animating.current = true;
 
-    // Direction: to dark sweeps left -> right; to light sweeps right -> left.
-    const enterFrom = next === 'dark' ? '-100%' : '100%';
-    const exitTo = next === 'dark' ? '100%' : '-100%';
+    // Both directions sweep left -> right.
+    const enterFrom = '-100%';
+    const exitTo = '100%';
 
     // Phase 0: park the overlay off-screen with no transition.
     overlay.style.transition = 'none';
