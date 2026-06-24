@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { hero, brand } from '../data/content.js';
+import { useTypewriter } from '../hooks/useTypewriter.js';
 
 export default function Hero() {
   const bgRef = useRef(null);
+  const typed = useTypewriter(hero.headlineAccents);
 
   useEffect(() => {
     const el = bgRef.current;
@@ -27,6 +29,11 @@ export default function Hero() {
     };
   }, []);
 
+  // Longest phrase reserves width so the headline never reflows.
+  const longestPhrase = hero.headlineAccents.reduce((a, b) =>
+    a.length >= b.length ? a : b
+  );
+
   return (
     <section id="top" className="relative overflow-hidden">
       {/* Parallax background layer */}
@@ -40,12 +47,29 @@ export default function Hero() {
 
         <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.05] text-plum dark:text-plum-200 sm:text-5xl md:text-6xl">
           {hero.headlineTop}{' '}
-          <span className="relative inline-block">
-            <span className="relative z-10">{hero.headlineAccent}</span>
+          {/*
+            Outer span: inline-block so the yellow highlight and invisible
+            ghost text can establish a stable width. The visible typed text
+            and cursor sit on top via absolute positioning.
+          */}
+          <span className="relative inline-block whitespace-nowrap">
+            {/* Ghost text — invisible, holds width of the longest phrase */}
+            <span aria-hidden="true" className="invisible">{longestPhrase}</span>
+
+            {/* Yellow highlight — full width of ghost */}
             <span
               aria-hidden="true"
               className="absolute inset-x-0 bottom-1 z-0 h-3 bg-yellow/70"
             />
+
+            {/* Typed text + blinking cursor */}
+            <span className="absolute inset-0 z-10 flex items-baseline gap-0">
+              <span>{typed}</span>
+              <span
+                aria-hidden="true"
+                className="typed-cursor ml-[2px] inline-block select-none self-stretch w-[3px] rounded-sm bg-plum dark:bg-plum-200"
+              />
+            </span>
           </span>
           <br />
           {hero.headlineBottom}

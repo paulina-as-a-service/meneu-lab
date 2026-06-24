@@ -45,6 +45,7 @@ export const hero = {
   eyebrow: 'Estrategia de comunicación digital',
   headlineTop: 'Tus redes no necesitan',
   headlineAccent: 'magia.',
+  headlineAccents: ['magia.', 'humo.', 'milagros.', 'viral hacks.', 'fórmulas.'],
   headlineBottom: 'Necesitan método.',
   sub: 'Manejamos tus redes desde un lugar honesto y cercano. Nada de fórmulas milagrosas ni crecimientos inflados: probamos, medimos y ajustamos, como en un laboratorio.',
   ctaPrimary: 'Trabajemos juntxs',
