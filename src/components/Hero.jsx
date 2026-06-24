@@ -1,17 +1,39 @@
+import { useEffect, useRef } from 'react';
 import { hero, brand } from '../data/content.js';
 
 export default function Hero() {
+  const bgRef = useRef(null);
+
+  useEffect(() => {
+    const el = bgRef.current;
+    if (!el) return;
+
+    const prefersReduced = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    if (prefersReduced) return;
+
+    let rafId;
+    const onScroll = () => {
+      rafId = requestAnimationFrame(() => {
+        el.style.transform = `translateY(${window.scrollY * 0.4}px)`;
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   return (
     <section id="top" className="relative overflow-hidden">
-      {/* soft brand glow, decorative */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-pink/20 blur-3xl dark:bg-pink/10"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-green/20 blur-3xl dark:bg-green/10"
-      />
+      {/* Parallax background layer */}
+      <div ref={bgRef} aria-hidden="true" className="pointer-events-none absolute inset-0 will-change-transform">
+        <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-pink/20 blur-3xl dark:bg-pink/10" />
+        <div className="absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-green/20 blur-3xl dark:bg-green/10" />
+      </div>
 
       <div className="shell section-pad relative">
         <p className="eyebrow">{hero.eyebrow}</p>

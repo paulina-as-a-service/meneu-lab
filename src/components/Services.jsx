@@ -1,22 +1,27 @@
 import { services } from '../data/content.js';
+import { useFadeIn } from '../hooks/useFadeIn.js';
 
 export default function Services() {
+  const ref = useFadeIn();
+
   return (
     <section id="servicios" className="section-pad">
-      <div className="shell">
-        <p className="eyebrow">{services.eyebrow}</p>
-        <h2 className="mt-3 font-display text-3xl font-semibold text-plum dark:text-plum-200 md:text-4xl">
-          {services.title}
-        </h2>
-        <p className="mt-3 max-w-xl font-body text-[15px] text-muted dark:text-night-muted">
-          {services.intro}
-        </p>
+      <div className="shell" ref={ref}>
+        <div className="fade-up">
+          <p className="eyebrow">{services.eyebrow}</p>
+          <h2 className="mt-3 font-display text-3xl font-semibold text-plum dark:text-plum-200 md:text-4xl">
+            {services.title}
+          </h2>
+          <p className="mt-3 max-w-xl font-body text-[15px] text-muted dark:text-night-muted">
+            {services.intro}
+          </p>
+        </div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.items.map((service, i) => (
             <article
               key={service.name}
-              className="flex flex-col rounded-card border-[1.5px] border-border1 bg-white p-6 dark:border-night-border dark:bg-night-card"
+              className="fade-up flex flex-col rounded-card border-[1.5px] border-border1 bg-white p-6 dark:border-night-border dark:bg-night-card"
             >
               <span className="font-display text-sm font-semibold text-pink">
                 {String(i + 1).padStart(2, '0')}

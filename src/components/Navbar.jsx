@@ -1,14 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Logo from './Logo.jsx';
 import ThemeToggle from './ThemeToggle.jsx';
 import { nav, hero } from '../data/content.js';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border1 bg-white/90 backdrop-blur dark:border-night-border dark:bg-night/90">
-      <nav className="shell flex items-center justify-between px-5 py-4 sm:px-8">
+    <header
+      className={[
+        'sticky top-0 z-40 border-b transition-all duration-300',
+        scrolled
+          ? 'border-border1/60 bg-white/80 py-0 shadow-sm backdrop-blur-md dark:border-night-border/60 dark:bg-night/80'
+          : 'border-border1 bg-white/90 backdrop-blur dark:border-night-border dark:bg-night/90',
+      ].join(' ')}
+    >
+      <nav
+        className={[
+          'shell flex items-center justify-between px-5 sm:px-8 transition-all duration-300',
+          scrolled ? 'py-2' : 'py-4',
+        ].join(' ')}
+      >
         <a href="#top" aria-label="Inicio">
           <Logo />
         </a>

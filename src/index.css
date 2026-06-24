@@ -51,6 +51,26 @@
   animation: theme-sweep-out 350ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
+/* Section entrance — fade up */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  opacity: 0;
+}
+
+.fade-up.is-visible {
+  animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 @layer components {
   .section-pad {
     @apply px-5 py-16 sm:px-8 md:py-24;

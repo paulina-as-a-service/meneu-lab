@@ -1,4 +1,5 @@
 import { words } from '../data/content.js';
+import { useFadeIn } from '../hooks/useFadeIn.js';
 
 function Check() {
   return (
@@ -33,14 +34,16 @@ function Cross() {
 }
 
 export default function Words() {
+  const ref = useFadeIn();
+
   return (
     <section className="section-pad">
-      <div className="shell">
-        <p className="eyebrow">{words.eyebrow}</p>
+      <div className="shell" ref={ref}>
+        <p className="fade-up eyebrow">{words.eyebrow}</p>
 
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           {/* SI */}
-          <div className="rounded-card bg-card-green p-7 dark:bg-night-card2">
+          <div className="fade-up rounded-card bg-card-green p-7 dark:bg-night-card2">
             <h3 className="flex items-center gap-3 font-display text-xl font-semibold text-olive dark:text-green">
               <span className="h-5 w-[7px] rounded bg-green" aria-hidden="true" />
               {words.yesTitle}
@@ -59,7 +62,7 @@ export default function Words() {
           </div>
 
           {/* NO */}
-          <div className="rounded-card bg-card-plum p-7 dark:bg-night-card2">
+          <div className="fade-up rounded-card bg-card-plum p-7 dark:bg-night-card2">
             <h3 className="flex items-center gap-3 font-display text-xl font-semibold text-plum dark:text-plum-200">
               <span className="h-5 w-[7px] rounded bg-pink" aria-hidden="true" />
               {words.noTitle}

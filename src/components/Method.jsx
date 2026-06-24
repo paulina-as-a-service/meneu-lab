@@ -1,11 +1,14 @@
 import { method } from '../data/content.js';
+import { useFadeIn } from '../hooks/useFadeIn.js';
 
 export default function Method() {
+  const ref = useFadeIn();
+
   return (
     <section id="como-trabajamos" className="section-pad">
-      <div className="shell">
+      <div className="shell" ref={ref}>
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <div>
+          <div className="fade-up">
             <p className="eyebrow">{method.eyebrow}</p>
             <h2 className="mt-3 font-display text-3xl font-semibold text-plum dark:text-plum-200 md:text-4xl">
               {method.title}
@@ -15,12 +18,11 @@ export default function Method() {
             </p>
           </div>
 
-          {/* Real process, so the numbers carry meaning */}
           <ol className="space-y-4">
             {method.steps.map((step) => (
               <li
                 key={step.n}
-                className="flex gap-5 rounded-card border-[1.5px] border-border2 bg-white p-6 dark:border-night-border dark:bg-night-card"
+                className="fade-up flex gap-5 rounded-card border-[1.5px] border-border2 bg-white p-6 dark:border-night-border dark:bg-night-card"
               >
                 <span className="font-display text-3xl font-semibold text-pink">
                   {step.n}

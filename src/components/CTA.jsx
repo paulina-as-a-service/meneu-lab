@@ -1,10 +1,13 @@
 import { cta, contact } from '../data/content.js';
+import { useFadeIn } from '../hooks/useFadeIn.js';
 
 export default function CTA() {
+  const ref = useFadeIn();
+
   return (
     <section id="contacto" className="section-pad">
-      <div className="shell">
-        <div className="rounded-[20px] bg-plum px-7 py-12 md:px-12 md:py-16">
+      <div className="shell" ref={ref}>
+        <div className="fade-up rounded-[20px] bg-plum px-7 py-12 md:px-12 md:py-16">
           <p className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-yellow">
             {cta.eyebrow}
           </p>
@@ -15,7 +18,6 @@ export default function CTA() {
             {cta.body}
           </p>
 
-          {/* PLACEHOLDER: estos datos viven en contact{} dentro de content.js */}
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={`mailto:${contact.email}`}
@@ -42,7 +44,6 @@ export default function CTA() {
           </div>
 
           <p className="mt-6 font-body text-sm text-white/70">
-            {/* PLACEHOLDER: correo real en content.js */}
             {contact.email} &nbsp;&middot;&nbsp; {contact.city}
           </p>
         </div>

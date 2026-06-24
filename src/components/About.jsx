@@ -1,19 +1,24 @@
 import { about } from '../data/content.js';
+import { useFadeIn } from '../hooks/useFadeIn.js';
 
 export default function About() {
+  const ref = useFadeIn();
+
   return (
     <section id="que-hacemos" className="section-pad">
-      <div className="shell">
-        <p className="eyebrow">{about.eyebrow}</p>
-        <h2 className="mt-3 font-display text-3xl font-semibold text-plum dark:text-plum-200 md:text-4xl">
-          {about.title}
-        </h2>
+      <div className="shell" ref={ref}>
+        <div className="fade-up">
+          <p className="eyebrow">{about.eyebrow}</p>
+          <h2 className="mt-3 font-display text-3xl font-semibold text-plum dark:text-plum-200 md:text-4xl">
+            {about.title}
+          </h2>
+        </div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {about.cards.map((card) => (
             <article
               key={card.title}
-              className="rounded-card border-[1.5px] border-border1 border-t-4 border-t-plum bg-white p-7 dark:border-night-border dark:border-t-pink dark:bg-night-card"
+              className="fade-up rounded-card border-[1.5px] border-border1 border-t-4 border-t-plum bg-white p-7 dark:border-night-border dark:border-t-pink dark:bg-night-card"
             >
               <h3 className="font-display text-lg font-semibold text-ink dark:text-night-ink">
                 {card.title}
