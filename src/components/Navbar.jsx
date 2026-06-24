@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Logo from './Logo.jsx';
 import ThemeToggle from './ThemeToggle.jsx';
+import ScrollProgressBar from './ScrollProgressBar.jsx';
 import { nav, hero } from '../data/content.js';
 
 export default function Navbar() {
@@ -22,6 +23,7 @@ export default function Navbar() {
           : 'border-border1 bg-white/90 backdrop-blur dark:border-night-border dark:bg-night/90',
       ].join(' ')}
     >
+      <ScrollProgressBar />
       <nav
         className={[
           'shell flex items-center justify-between px-5 sm:px-8 transition-all duration-300',
