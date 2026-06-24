@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white font-body text-ink antialiased;
+    transition:
+      background-color 300ms ease,
+      color 300ms ease;
+  }
+
+  .dark body {
+    background-color: #17121d;
+    color: #f1e9f3;
+  }
+
+  /* Respect users who prefer less motion */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .section-pad {
+    @apply px-5 py-16 sm:px-8 md:py-24;
+  }
+
+  .shell {
+    @apply mx-auto w-full max-w-content;
+  }
+
+  .eyebrow {
+    @apply font-display text-xs font-semibold uppercase tracking-[0.18em] text-olive dark:text-green;
+  }
+
+  /* Focus ring for keyboard users on every interactive element */
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible {
+    @apply outline-none ring-2 ring-plum ring-offset-2 ring-offset-white dark:ring-pink dark:ring-offset-night;
+  }
+}
